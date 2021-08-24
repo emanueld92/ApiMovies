@@ -3,3 +3,4 @@ client/
 __pycache__/
 **/.vscode/
 .env
+**/migrations/

@@ -32,6 +32,7 @@ BASE_APPS = [
 
 LOCAL_APPS = [
     'apps.authentication',
+    'apps.films',
 
 ]
 THIRD_APPS = [
