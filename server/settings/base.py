@@ -19,7 +19,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-DJANGO_APPS = [
+BASE_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -29,16 +29,20 @@ DJANGO_APPS = [
 
 
 ]
+
+LOCAL_APPS = [
+    'apps.authentication',
+
+]
 THIRD_APPS = [
+    'corsheaders',
     'rest_framework',
+    'django_rest_passwordreset',
+    
 ]
 
-CUSTOM_APPS = [
-    'apps.users',
-
-]
-
-INSTALLED_APPS = DJANGO_APPS+CUSTOM_APPS+THIRD_APPS
+INSTALLED_APPS = BASE_APPS+LOCAL_APPS+THIRD_APPS
+AUTH_USER_MODEL = "authentication.CustomUser"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -48,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'server.urls'
@@ -99,9 +104,14 @@ USE_I18N = True
 
 USE_L10N = True
 
+
 USE_TZ = True
 
 
 # Default primary key field type
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#Agregamos las urls que puedan hacerle peticiones de tipo Cors a django, en este caso React
+CORS_ORIGIN_WHITELIST = ["http://localhost:3000"]
+CORS_ALLOW_CREDENTIALS = True
