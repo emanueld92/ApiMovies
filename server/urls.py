@@ -28,7 +28,11 @@ urlpatterns = [
     #
     path('api/', include('apps.authentication.urls')),
     path('api/', include(routers.urls)),
+    
+    #vista de peliculas favoritas por usuario
+    path('api/userfilms/', film_views.FilmUserViewSet.as_view())
 ]
+
 
 if settings.DEBUG:
     urlpatterns+=static('/media/', document_root=settings.MEDIA_ROOT)
