@@ -34,9 +34,18 @@ class LogoutView(APIView):
 class signupView(generics.CreateAPIView):
     serializer_class=UserSerializer
 
+
 #funcion para cambiar password mediante validacion token de correo electronico
 @receiver(reset_password_token_created)
 def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
     #Envio de correo al cliente para recuperacion de password
  print(
      f"\nRecupera la contraseña del correo '{reset_password_token.user.email}' usando el token '{reset_password_token.key}' desde la API http://localhost:8000/api/auth/reset/confirm/.")
+
+class ProfileView(generics.RetrieveUpdateAPIView):
+    serializer_class=UserSerializer
+    http_method_names=['get','patch']
+    
+    def get_object(self):
+        if self.request.user.is_authenticated:
+            return self.request.user

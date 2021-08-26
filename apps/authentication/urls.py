@@ -13,4 +13,7 @@ urlpatterns = [
     # ResetPasswor Endpoint
     path('auth/reset/', include('django_rest_passwordreset.urls',
          namespace='password_reset')),
+    
+    #Modificar perfiles de usuario
+    path('user/profile/',ProfileView.as_view(), name='user_profile'),
 ]
