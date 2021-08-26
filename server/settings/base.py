@@ -8,6 +8,7 @@ Using Django 3.2.6.
 
 from pathlib import Path
 from django.apps import AppConfig
+import os
 
 AppConfig.default = False
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,6 +40,7 @@ THIRD_APPS = [
     'corsheaders',
     'rest_framework',
     'django_rest_passwordreset',
+    'django_filters'
     
 ]
 
@@ -116,3 +118,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #Agregamos las urls que puedan hacerle peticiones de tipo Cors a django, en este caso React
 CORS_ORIGIN_WHITELIST = ["http://localhost:3000"]
 CORS_ALLOW_CREDENTIALS = True
+
+#configuration media root for manage to file
+MEDIA_ROOT=os.path.join(BASE_DIR, 'media') #path to server local
+MEDIA_URL = 'http://localhost:8000/media/' #URL for developer

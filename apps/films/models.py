@@ -5,6 +5,9 @@ from django.utils.text import slugify
 
 
 class Film(models.Model):
+    def path_to_film( instance, filename):
+        return f'films/{instance.id}/{filename}'
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField("title", max_length=150)
     year = models.PositiveIntegerField("year", default=2000)
@@ -14,6 +17,11 @@ class Film(models.Model):
         "URL youtube", max_length=200, blank=True, null=True)
     genres = models.ManyToManyField('FilmGenre', related_name="film_genres",
                                     verbose_name="Genres")
+
+    image_thumbnail = models.ImageField(
+        upload_to=path_to_film, null=True, blank=True, verbose_name="Miniatura")
+    image_wallpaper = models.ImageField(
+        upload_to=path_to_film, null=True, blank=True, verbose_name="Wallpaper")
 
     class Meta:
         verbose_name = "Película"

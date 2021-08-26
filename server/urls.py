@@ -1,7 +1,5 @@
 """server URL Configuration
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/3.2/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -16,9 +14,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from rest_framework import routers
-
+from django.conf import settings
+from django.conf.urls.static import static
+from apps.films import views as film_views
 #Routers APi
 routers=routers.DefaultRouter()
+routers.register('films', film_views.FilmVieSet, basename='Film')
+routers.register('genres', film_views.GenreViewSet, basename='FilmGenre')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,3 +29,6 @@ urlpatterns = [
     path('api/', include('apps.authentication.urls')),
     path('api/', include(routers.urls)),
 ]
+
+if settings.DEBUG:
+    urlpatterns+=static('/media/', document_root=settings.MEDIA_ROOT)
