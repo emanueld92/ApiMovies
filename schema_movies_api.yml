@@ -1,0 +1,538 @@
+openapi: 3.0.3
+info:
+  title: Movies Api
+  version: 1.0.0
+  description: Api Movies api with ReactJs
+paths:
+  /api/auth/login:
+    post:
+      operationId: auth_login_create
+      description: ''
+      tags:
+      - auth
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/auth/logout:
+    post:
+      operationId: auth_logout_create
+      description: ''
+      tags:
+      - auth
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/auth/reset/:
+    post:
+      operationId: auth_reset_create
+      description: |-
+        An Api View which provides a method to request a password reset token based on an e-mail address
+
+        Sends a signal reset_password_token_created when a reset token was created
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Email'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Email'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Email'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Email'
+          description: ''
+  /api/auth/reset/confirm/:
+    post:
+      operationId: auth_reset_confirm_create
+      description: An Api View which provides a method to reset a password based on
+        a unique token
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordToken'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordToken'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordToken'
+          description: ''
+  /api/auth/reset/validate_token/:
+    post:
+      operationId: auth_reset_validate_token_create
+      description: An Api View which provides a method to verify that a token is valid
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetToken'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ResetToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResetToken'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResetToken'
+          description: ''
+  /api/auth/signup/:
+    post:
+      operationId: auth_signup_create
+      description: ''
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/films/:
+    get:
+      operationId: films_list
+      description: ''
+      parameters:
+      - in: query
+        name: genres
+        schema:
+          type: array
+          items:
+            type: integer
+        explode: true
+        style: form
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: year__gte
+        schema:
+          type: integer
+      - in: query
+        name: year__lte
+        schema:
+          type: integer
+      tags:
+      - films
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedFilmList'
+          description: ''
+  /api/films/{id}/:
+    get:
+      operationId: films_retrieve
+      description: ''
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Película.
+        required: true
+      tags:
+      - films
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Film'
+          description: ''
+  /api/genres/:
+    get:
+      operationId: genres_list
+      description: ''
+      tags:
+      - genres
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FilmGenreSerializers'
+          description: ''
+  /api/genres/{Slug}/:
+    get:
+      operationId: genres_retrieve
+      description: ''
+      parameters:
+      - in: path
+        name: Slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - genres
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FilmGenreSerializers'
+          description: ''
+  /api/user/profile/:
+    get:
+      operationId: user_profile_retrieve
+      description: ''
+      tags:
+      - user
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: user_profile_partial_update
+      description: ''
+      tags:
+      - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/userfilms/:
+    get:
+      operationId: userfilms_retrieve
+      description: ''
+      tags:
+      - userfilms
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: userfilms_create
+      description: ''
+      tags:
+      - userfilms
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+components:
+  schemas:
+    Email:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    Film:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        genres:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedFilmGenre'
+        title:
+          type: string
+          maxLength: 150
+        year:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        review_short:
+          type: string
+          nullable: true
+          title: Argument
+        review_large:
+          type: string
+          title: Argument Large
+        trailer_url:
+          type: string
+          format: uri
+          nullable: true
+          title: URL youtube
+          maxLength: 200
+        image_thumbnail:
+          type: string
+          format: uri
+          nullable: true
+          title: Miniatura
+        image_wallpaper:
+          type: string
+          format: uri
+          nullable: true
+          title: Wallpaper
+        favorites:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Favoritos
+        average_note:
+          type: number
+          format: float
+          maximum: 10.0
+          title: Nota media
+      required:
+      - genres
+      - id
+      - title
+    FilmGenreSerializers:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        films:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedFilm'
+          readOnly: true
+        name:
+          type: string
+          title: Nombre
+          maxLength: 50
+        slug:
+          type: string
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - films
+      - id
+      - name
+      - slug
+    NestedFilm:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 150
+        image_thumbnail:
+          type: string
+          format: uri
+          nullable: true
+          title: Miniatura
+      required:
+      - id
+      - title
+    NestedFilmGenre:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Nombre
+          maxLength: 50
+        slug:
+          type: string
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - id
+      - name
+      - slug
+    PaginatedFilmList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Film'
+    PasswordToken:
+      type: object
+      properties:
+        password:
+          type: string
+          title: Contraseña
+        token:
+          type: string
+      required:
+      - password
+      - token
+    PatchedUser:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        username:
+          type: string
+        password:
+          type: string
+          minLength: 8
+        avatar:
+          type: string
+          format: uri
+          nullable: true
+    ResetToken:
+      type: object
+      properties:
+        token:
+          type: string
+      required:
+      - token
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        username:
+          type: string
+        password:
+          type: string
+          minLength: 8
+        avatar:
+          type: string
+          format: uri
+          nullable: true
+      required:
+      - email
+      - password
+      - username
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Session

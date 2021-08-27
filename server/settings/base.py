@@ -40,7 +40,8 @@ THIRD_APPS = [
     'corsheaders',
     'rest_framework',
     'django_rest_passwordreset',
-    'django_filters'
+    'django_filters',
+    'drf_spectacular',
     
 ]
 
@@ -122,3 +123,16 @@ CORS_ALLOW_CREDENTIALS = True
 #configuration media root for manage to file
 MEDIA_ROOT=os.path.join(BASE_DIR, 'media') #path to server local
 MEDIA_URL = 'http://localhost:8000/media/' #URL for developer
+
+
+##Spectacular api doc
+REST_FRAMEWORK = {
+    # YOUR SETTINGS
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Movies Api',
+    'DESCRIPTION': 'Api Movies api with ReactJs',
+    'VERSION': '1.0.0',
+    
+}
